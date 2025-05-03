@@ -1,0 +1,528 @@
+package OOP;
+//Import all the essential extensions required to execute the code
+import java.awt.AWTException;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+import java.nio.file.StandardOpenOption;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
+import uk.ac.leedsbeckett.oop.LBUGraphics;
+
+
+//This class represents the graphics system and extends the LBUGraphics class.
+public class GraphicsSystem extends LBUGraphics {
+	// This variable stores the fill status of the graphics.
+	private boolean fill;
+	// Constructor that sets up a JFrame object called MainFrame to display the graphics.
+	public GraphicsSystem() {
+		
+		// Create a JFrame object called MainFrame and set its layout to FlowLayout.
+		JFrame MainFrame = new JFrame();       
+		MainFrame.setLayout(new FlowLayout());  
+		
+		// Add this object (the graphics) to the MainFrame object.
+		MainFrame.add(this);
+		
+		// Pack the MainFrame object to fit the size of the graphics.
+		MainFrame.pack();
+		
+		// Make the MainFrame object visible.
+		MainFrame.setVisible(true);
+		
+		// Call the already defined method to make the turtle face down and also make the pen down.
+		turnLeft();                 
+		penDown();
+	}
+
+	// An array is created to store all the valid commands required.
+	final String[] array = new String[]{"about","penup","pendown","turnleft","turnright","forward","backward","reset",
+			"new","black","green","red","white","load","save","help","circle","etriangle","triangle",
+			"rectangle","pencolor","square","random","fill","display"};
+	
+//An ArrayList is created to store the commands entered by the user.
+	public ArrayList<String> list = new ArrayList<String>();
+
+	private Color penColor;
+	
+	
+	@Override
+	//Overriding about method which appends author name along with the turtle dance    %+' overriding about method
+	public void about() {
+	    clear();    // clear the screen
+	    reset();    // reset turtle
+	    super.about();    // call super method
+	    getGraphicsContext().drawString("Anil Acharya", 250,350); // draw author name in given position
+	    JLabel name = new JLabel("ANIL ACHARYA");    // Create label with author name
+	    name.setBounds(400, 400, 400, 400);    // Set bounds of label
+	    name.setForeground(Color.green);    // set foreground color of label to green
+	    add(name);    // add name in window
+	    displayMessage("LBU GRAPHICS V4.5");    // display author name
+	       
+	  }
+	
+	public void pencolor(int red, int green, int blue) {
+	    // Set the pen color to the specified RGB values
+	    Color color = new Color(red, green, blue);
+	    this.penColor = color;
+	}
+
+	//@Override
+	 public void processCommand(String command) {    // Method to process input command
+		    try {    // try block
+		        if (command.contains(" ")) {    // check if command contains space
+		            String[] storeCommand = command.split(" ");    // split command on the basis of space
+		            //parameter needed
+		            switch (storeCommand[0]) {    
+		                case "forward":    // if command is forward
+		                    int num = Integer.parseInt(storeCommand[1]);    // initialize num with parameter of forward method
+		                    if (num > 0) {    // check if num is greater than 0
+		                        forward(num);    
+		                        list.add(command);   
+		                    }   
+		                    break;    //
+		                case "turnleft":    // if command is turnleft
+		                    num = Integer.parseInt(storeCommand[1]);    // initialize num with parameter of turnleft method
+		                    if (num > 0) {    // check if num is greater than 0
+		                        turnLeft(num);    
+		                        list.add(command);   
+		                    }    
+		                    break;   
+		                case "turnright":    // if command is turnright
+		                    num = Integer.parseInt(storeCommand[1]);    // initialize num with parameter of turnright method
+		                    if (num > 0) {    // check if num is greater than 0
+		                        turnRight(num);    
+		                        list.add(command);    
+		                    }   
+		                    break;    
+		                case "backward":    // if command is backward
+		                    num = Integer.parseInt(storeCommand[1]);    // initialize num with parameter of backward method
+		                    if (num > 0) {    // check if num is greater than 0
+		                        forward(-num);    
+		                        list.add(command);    
+		                    }    
+		                    break;    
+		               
+		                case "circle":    // if command is circle
+		                    num = Integer.parseInt(storeCommand[1]);    // initialize num with parameter of circle method
+		                    if (num > 0) {    // check if num is greater than 0
+		                        circle(num);    
+		                    }    
+		                    break;    
+		              
+		                case "triangle":   
+		                    if (storeCommand.length == 4 && Integer.parseInt(storeCommand[1]) > 0 && Integer.parseInt(storeCommand[2]) > 0 && Integer.parseInt(storeCommand[3]) > 0) {    // Check if all the parameters are valid or not
+		                        triangle(Integer.parseInt(storeCommand[1]), Integer.parseInt(storeCommand[2]), Integer.parseInt(storeCommand[3]));    // call triangle function with 3 parameters    // Call Triangle function with 3 parameters
+		                    } else if (storeCommand.length == 2 && Integer.parseInt(storeCommand[1]) > 0) {    // Check if parameter is valid or not
+		                        triangle(Integer.parseInt(storeCommand[1]));    // call triangle function with 1 parameter    // Call Triangle function with 1 parameter
+		                    }
+		                    break;    
+		                case "rectangle":    
+		                    if (Integer.parseInt(storeCommand[1]) > 0 && Integer.parseInt(storeCommand[2]) > 0) {   // Check if parameters are valid or not
+		                        rectangle(Integer.parseInt(storeCommand[1]), Integer.parseInt(storeCommand[2]));  //angle function with 2 parameters    // Call rectangle function with 2 parameters
+		                    }
+		                    break;    
+		                case "square":   
+		                    if (Integer.parseInt(storeCommand[1]) > 0) {    // Check if parameter is valid or not
+		                        square(Integer.parseInt(storeCommand[1]));    // call square function with 1 parameter    // Call square function with 1 parameter
+		                    }
+		                    break;
+		          
+		                    
+		                    
+		                case "pen":
+		                    if (Integer.parseInt(storeCommand[1]) > 0 && Integer.parseInt(storeCommand[2]) > 0 && Integer.parseInt(storeCommand[3]) > 0) {
+		                        if (Integer.parseInt(storeCommand[1]) > 255 || Integer.parseInt(storeCommand[2]) > 255 || Integer.parseInt(storeCommand[3]) > 255) {
+		                            JOptionPane.showMessageDialog(null, "Color value can only be in the range of 0-255!!","Error",JOptionPane.ERROR_MESSAGE);
+		                        } else {
+		                            setPenColour(new Color(Integer.parseInt(storeCommand[1]), Integer.parseInt(storeCommand[2]), Integer.parseInt(storeCommand[3])));
+		                        }
+		                    }
+		                    break;
+		            }
+		        }
+		                    
+
+		     
+		        //with no parameters needed
+		         else {    
+		            switch (command) {    // check the value of command
+		                case "about":    
+		                    about();    // calls about() function
+		                    list.add(command);    // adds command to list
+		                    break;    
+		                case "penup":   
+		                    penUp();    // calls penUp() function
+		                    list.add(command);    // adds command to list
+		                    break;   
+		                case "pendown":    // checks if command is pendown
+		                    penDown();    // calls penDown() function
+		                    list.add(command);    // adds command to list
+		                    break;    
+		                case "clear":    // checks if command is clear
+		                    clear();    // calls clear() function
+		                    list.add(command);    // adds command to list
+		                    break;    
+		                case "load":    // checks if command is load
+		                	load();    // calls load() function
+		                	list.add(command);    // adds command to list
+		                    break;   
+		                case "save":    // checks if command is save
+		                	save();    // calls save() function
+		                	list.add(command);    // adds command to list
+		                	 break;    
+		              
+		                case "reset":    // checks if command is reset
+		                    reset();    // calls reset() function
+		                    penDown();    // calls penDown function
+		                    list.add(command);    // adds command to list
+		                    break;    
+		                case "new":    // checks if command is new
+		                    clear();    // calls clear() function
+		                    list.add(command);    // adds command to list
+		                    break;   
+		                case "black":    // checks if command is black
+		                    setPenColour(Color.black);    // calls setPenColour() function
+		                    list.add(command);    // adds command to list
+		                    break;    
+		                case "red":    // checks if command is red
+		                    setPenColour(Color.red);    // calls setPenColour() function
+		                    list.add(command);    // adds command to list
+		                    break;   
+		                case "green":    // checks if command is green
+		                    setPenColour(Color.green);    // calls setPenColour() function
+		                    list.add(command);    // adds command to list
+		                    break;   
+		                case "white":    // checks if command is white
+		                    setPenColour(Color.white);    // calls setPenColour() function
+		                    list.add(command);    // adds command to list
+		                    break;    
+		                case "help":    // checks if command is help
+		                    Help();    // calls Help() function
+		                    break;    
+		                case "display":    // checks if command is display
+		                    Display();    // calls Display() function
+		                    break;   
+		                case "random":    // checks if command is random
+		                    randomColor();    // calls randomColor() function
+		                    break;   
+		                case "fill":    // checks if command is fill
+		                    fill = !fill;    // invert the value of fill
+		                    break; 
+		            
+		                default:    // if any other command
+		                    JOptionPane.showMessageDialog(null, "Not a Valid Command!!", "Error", JOptionPane.ERROR_MESSAGE);    // Print message on console
+		                    break;    
+		            }
+
+		        }
+		        } catch (NumberFormatException e) {    // Catch the exception if the input is not in number format
+			        JOptionPane.showMessageDialog(null,"Not a Valid Command!!", "Error", JOptionPane.ERROR_MESSAGE);
+			         if(command.equals("clear")==true) //If user passes clear command this part will execute
+			        		{
+			        		clear();
+			        		list.add(command); //add the command is saved in text file
+			        		}
+			    			//If the command passed is not in the array list this part will execute
+			    			else if(command.equals("array")==false) 
+			    			{
+			    				JOptionPane.showMessageDialog(null, "Not a Valid Command!!","Error",JOptionPane.ERROR_MESSAGE);
+			    			}		
+			    		}	
+
+			    	catch(ArrayIndexOutOfBoundsException e)  //This exception is thrown if the array goes out of bound
+			    	{
+			    		JOptionPane.showMessageDialog(null, "Index out of Bound!!","Error",JOptionPane.ERROR_MESSAGE);
+			    	}
+			    	
+			    }
+
+		public void saveCommands(ArrayList<String> commands) {    // Defining a function
+			// Set the path to the text file to be saved.
+			Path filePath = Paths.get("C:\\Users\\ANIL\\eclipse-workspace\\Java OOP\\command.txt");
+
+			try {
+				// Write the user commands to the text file.
+				Files.write(filePath, commands, StandardOpenOption.CREATE);
+			}
+			catch(Exception e) {
+				// If there is an error saving the commands to the file, show an error message.
+				JOptionPane.showMessageDialog(null, "Error saving commands to file.","Save error",JOptionPane.ERROR_MESSAGE);
+			}
+	}
+		    public void save() {
+				// Display a dialog box with options to save commands or image.
+				String[] options = {"Save Commands", "Save Image"};
+				int userChoice = JOptionPane.showOptionDialog(null, "What would you like to save?", "Save", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+
+				if (userChoice == 0) {
+					// If the user chooses to save commands, call the saveCommands method.
+					saveCommands(list);
+					JOptionPane.showMessageDialog(null, "Commands saved successfully!", "Save Command", JOptionPane.PLAIN_MESSAGE);
+				}
+				else if (userChoice == 1) {
+					// If the user chooses to save image, capture the screenshot and save it to a file.
+					try {
+						Robot robot = new Robot();
+						String filePath = "C:\\Users\\ANIL\\eclipse-workspace\\Java OOP\\Screenshots.jpg"; // Path to save the image.
+						Rectangle captureArea = new Rectangle(0, 0, 1000, 400); // The area of the screen to capture.
+						BufferedImage image = robot.createScreenCapture(captureArea); // Capture the screenshot.
+						ImageIO.write(image, "jpg", new File(filePath)); // Save the image to a file.
+						JOptionPane.showMessageDialog(null, "Image saved successfully!", "Save Image", JOptionPane.PLAIN_MESSAGE);
+					} 
+					catch(AWTException | IOException ex) {
+						// If there is an error saving the image, show an error message.
+						JOptionPane.showMessageDialog(null, "Error saving image.", "Save Image Error", JOptionPane.ERROR_MESSAGE);
+						ex.printStackTrace();
+					}
+				}
+				else {
+					// If the user doesn't select any option, show an error message.
+					JOptionPane.showMessageDialog(null, "No option selected.", "Error", JOptionPane.ERROR_MESSAGE);
+				}
+		}
+		    public void load()    // Function to read a file
+			{
+			// Create an array with the options "Load Commands" and "Load Image"
+			String options[] = {"Load Commands", "Load Image"};
+			// Display a dialog box with the options
+			int choice = JOptionPane.showOptionDialog(null, "What would you like to load?", "Load", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]);
+			if (choice == 0) { // If the user selects "Load Commands"
+				File commandFile = new File("C:\\Users\\ANIL\\eclipse-workspace\\Java OOP\\command.txt");
+			
+				try {
+					// Create a Scanner object to read the command file
+					Scanner scan = new Scanner(commandFile);
+					// Read the file line by line
+					while (scan.hasNextLine()) {
+						processCommand(scan.nextLine()); // Load the command into the screen
+					}
+					scan.close();
+					JOptionPane.showMessageDialog(null, "Commands loaded successfully!", "Load Commands", JOptionPane.PLAIN_MESSAGE);
+				} catch (FileNotFoundException e) {
+					// If the file is not found, display an error message
+					JOptionPane.showMessageDialog(null, "Error: File not found.", "File Error", JOptionPane.ERROR_MESSAGE);
+				}
+			} else if (choice == 1) { // If the user selects "Load Image"
+				File imageFile = new File("C:\\Users\\ANIL\\eclipse-workspace\\Java OOP\\ANIL.jpg");
+				try {
+					JFrame frame = new JFrame(); // Create a new JFrame
+					// Load the image and display it in the JFrame
+					frame.setContentPane(new JLabel(new ImageIcon(ImageIO.read(imageFile))));
+					frame.pack();
+					frame.setVisible(true);
+					JOptionPane.showMessageDialog(null, "Image loaded successfully!", "Load Image", JOptionPane.PLAIN_MESSAGE);
+				} catch (IOException e) {
+					// If the file cannot be loaded, display an error message
+					JOptionPane.showMessageDialog(null, "Error: Image not found.", "Image Error", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+			}
+
+//Shapes will be drawn after the command executed and shown after next command got enter
+/*Triangle is drawn in the screen below the turtle
+ *
+ * Parameter passed is of three sides of the triangle which can be of variable length
+ */
+private void triangle(int sideA, int sideB, int sideC)    // Define method triangle with three sides parameter
+{
+	Graphics canvas = getGraphicsContext();       //Creating a Graphics object called canvas    // Create a canvas object
+	canvas.setColor(Color.BLUE);                  //sets the color to orange    // Sets the color to pink
+	
+	//Creating triangle on the basis of the coordinates passed    // Create triangle by the given coordinates
+	int[] xPoints = {sideA, sideB, sideC};    // Create an array of xPoints coordinates
+	int[] yPoints = {sideB, sideC, sideA};    // Create an array of yPoints coordinates
+	
+	if (fill)      //if fill is passed by the user and triangle is called, filled triangle will be displayed    // Check if fill is passed or not.
+	{
+		canvas.fillPolygon(xPoints, yPoints, 3);    // fill the triangle with the given coordinates
+	}
+	else          //if fill is not passed then normal triangle is drawn without the filled color    // draw triangle with the given coordinates
+		canvas.drawPolygon(xPoints, yPoints, 3);
+}
+
+/*Equilateral Triangle is drawn in the screen below the turtle
+ * Parameter passed is one side of triangle which is equal to all side
+ */
+private void triangle(int oneside)    // Define method triangle with single side parameter
+{
+	//Finding out the value of new coordinates of triangle    // Finding new coordinates
+	int a = oneside/2;    // divide side by 2 and store in v
+	int b = (int) Math.round(Math.sqrt(Math.pow(oneside, 2)-Math.pow(a, 2)));    // calculating w
+	
+	Graphics canvas = getGraphicsContext();     //Creating a Graphics object called canvas    // Create canvas object
+	canvas.setColor(Color.PINK);                //sets the color to orange    // set color to pink
+	
+	//Creating triangle on the basis of new coordinates passed    // Create triangle by the given new coordinates
+	int[] xPoints = { xPos, xPos+a, xPos-a};    // Create an array of xPoints coordinates
+	int[] yPoints = { yPos, yPos+b, yPos+b};    // Create an array of yPoints coordinates
+	  /*forward(oneside);
+      turnRight(120);
+      forward(oneside);
+      //turnRight(120);
+      forward(oneside);
+      turnRight(120);*/
+	
+	if (fill)        //if fill is passed by the user and triangle is called, filled equilateral triangle will be displayed    // Check if fill is passed or not.
+	{
+		canvas.fillPolygon(xPoints, yPoints, 3);    // fill the triangle with the given new coordinates
+	}
+	else            //if fill is not passed then normal equilateral triangle is drawn without the filled color    // draw triangle with the given new coordinates
+		canvas.drawPolygon(xPoints, yPoints, 3);
+}
+
+@Override
+//Overriding the circle method which has just been defined in LBUGraphics and modifying the method    // overriding circle method
+public void circle(int radius)    // define circle method with radius as parameter
+{
+	Graphics canvas = getGraphicsContext();   //Creating a Graphics object called canvas    // Create canvas object
+	canvas.setColor(Color.red);               //sets the color to red    // set color to red
+	
+	if (fill)         //if fill is passed by the user and circle is called, filled circle will be displayed    // Check if fill is passed or not.
+	{
+		canvas.fillOval(xPos, yPos ,radius*2, radius*2 );    // fill the circle with the given coordinates
+	}
+	else             //if fill is not passed then normal circle is drawn without the filled color    // draw circle with the given coordinates
+		canvas.drawOval(xPos, yPos ,radius*2, radius*2 );
+}
+
+
+
+ //R6 
+ 
+//Display Method displays the images that is stored in a folder which is not assigned anywhere 
+public void Display()    // Defining function Display
+{
+	File imageFile = new File("C:\\Users\\\\ANIL\\\\eclipse-workspace\\\\Java OOP\\java.jpg");    // Creating File object named imageFile
+	try 
+    {
+		JFrame screen =new JFrame();                  //New JFrame object fr is created
+		
+		//Loads the file where the image is saved and displays in screen
+        screen.setContentPane(new JLabel(new ImageIcon(ImageIO.read(imageFile))));    // Set the content pane of screen to the image stored in imageFile
+        screen.pack();    // Pack the screen object
+        screen.setVisible(true);    // Display the screen object
+        JOptionPane.showMessageDialog(null, "Image loaded sucessfully!!","Image Command",JOptionPane.PLAIN_MESSAGE);    // Display a message dialog box
+    } 
+    catch (IOException e)                         //If the image is not loaded in a file then execute catch part for error dialog box
+    {
+    	JOptionPane.showMessageDialog(null, "Image not loaded!!","ImageLoad error",JOptionPane.ERROR_MESSAGE);    // Display a error dialog box
+    }
+}
+
+//R6
+//Creating extra method for generating Random colors(RGB)
+public void randomColor()    //Its sets the pen color to a random color as soon as this function is called    // Defining function randomColor
+{
+	Random rgb = new Random();    // Creating a Random object called rgb    
+	setPenColour(new Color(rgb.nextInt(256),rgb.nextInt(256),rgb.nextInt(256)));// Set the pen color to the random color
+}
+
+//R6
+//Creating extra method Help as showing the requirements of the project   
+public void Help()    // Method to display help detail
+{
+	//All detail stored in string    // Store help details in string
+	String detail = "ABOUT\n"+    
+			"------\n"+    
+			"about: Display the turtle dance moving round and the name of the author\n"+    
+
+			"PEN COMMANDS\n"+    
+			"---------\n"+    
+			"penup: Lifts the pen from the canvas, so that movement does not get shown\n"+    
+			"pendown: Places the pen down on the canvas so movement gets shown as a drawn line\n"+    
+			"black: Make the pen color black\n"+    
+			"green: Makes the pen color green\n"+    
+			"red: Makes the pen color red\n"+    
+			"white: Makes the pen color white\n"+    
+			"pen: Takes three different color values to make RGB color\n"+    
+			"random: Sets the color of the pen to random color\n"+    
+
+			"SCREEN COMMANDS\n"+    
+			"---------------\n"+    
+			"clear: Clears the whole output screen\n"+    
+			"reset: Resets the canvas to its initial state with turtle pointing down but does not clear the display\n"+
+			"save: Provides options to save command or to save image\n"+   
+			"load: Provides options to load command or to load image\n"+  
+			"display: Displays the images which are downloaded in your folder\n"+   
+
+			"DRAWINGS\n"+    
+			"--------\n"+    
+			"circle SIDE: Draws a circle of the radius entered by the user\n"+    
+			"rectangle BREADTH AND HEIGHT: Draws a rectangle\n"+    
+			"square SIDE: Draws a square with the same length of all sides\n"+   
+			"triangle 1POINT: Draws an equilateral triangle\n"+    
+			"triangle 3POINTS: Draws a triangle with three given points\n"+   
+
+			"LINE COMMANDS\n"+    
+			"-------------\n"+    
+			"forward UNITS: Moves the turtle forward by the units passed\n"+    
+			"backward UNITS: Moves the turtle backward by the units passed\n"+    
+			"turnleft DEGREES: Turns the turtle to the left by the degree passed\n"+   
+			"turnright DEGREES: Turns the turtle to the right by the degree passed\n"+    
+
+			"HELP\n"+    
+			"----\n"+    
+			"help: Displays this menu! (REQ-6)";    
+	
+	//Displays all the detail of help    // Display all help details on console
+	JOptionPane.showMessageDialog(null, detail);     
+}
+
+//R6
+/*Rectangle is drawn in the screen below the turtle
+* Parameter passed is Breadth and Height to draw rectangle
+*/
+private void rectangle(int breadth, int height)    // Defining method "rectangle"
+{
+	Graphics canvas = getGraphicsContext();      //Creating a Graphics object called canvas    // Creating object "canvas" of class "Graphics"
+	canvas.setColor(Color.yellow);               //sets the color to yellow    // Set color to yellow
+	
+	if (fill)           //if fill is passed by the user and rectangle is called, filled rectangle will be displayed    // if fill is passed then display rectangle as filled
+	{
+		canvas.fillRect(xPos - breadth/2, yPos, breadth, height);    // Display filled rectangle
+	}
+	else                //if fill is not passed then normal rectangle is drawn without the filled color    // if fill is passed then display rectangle as unfilled
+		canvas.drawRect(xPos - breadth/2, yPos, breadth,height);    // Display unfilled rectangle
+}
+
+
+/*Square is drawn in the screen below the turtle
+* Parameter passed is Length of the sides
+*/
+private void square(int side)    // Defining method "square"
+{
+	Graphics canvas = getGraphicsContext();    //Creating a Graphics object called canvas    // Creating object "canvas" of class "Graphics"
+	canvas.setColor(Color.blue);               //sets the color to blue    // Set color to blue
+	
+	if (fill)        //if fill is passed by the user and square is called, filled square will be displayed    // If fill is passed then display square as filled
+	{
+		canvas.fillRect(xPos - side / 2, yPos, side, side);    // Display filled square
+	}
+	else            //if fill is not passed then normal square is drawn without the filled color    // If fill is not passed then display square as unfilled
+		canvas.drawRect(xPos - side / 2, yPos, side, side);    // Display unfilled square
+}
+
+//Main Method which starts the program execution
+public static void main(String[] args)
+{
+	new GraphicsSystem(); //CReating instance of a class that extends LBUGraphics
+}
+}

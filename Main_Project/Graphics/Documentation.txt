@@ -1,0 +1,621 @@
+Package uk.ac.leedsbeckett.oop
+Class LBUGraphics
+java.lang.Object
+java.awt.Component
+java.awt.Container
+javax.swing.JComponent
+javax.swing.JPanel
+uk.ac.leedsbeckett.oop.LBUGraphics
+All Implemented Interfaces:
+ActionListener, ImageObserver, MenuContainer, Serializable, EventListener, Accessible, uk.ac.leedsbeckett.oop.CommandLineInterface
+public abstract class LBUGraphics
+extends JPanel
+implements ActionListener, uk.ac.leedsbeckett.oop.CommandLineInterface
+LBUGraphics (Duncan Mullier, Leeds Beckett University) extended JPanel with simple drawing commands and a visual representation of a turtle to perform "turtle graphics" drawing operations.
+Since:
+12/2024
+Author:
+Duncan Mullier
+Adding the Jar File Eclipse
+The jar file should be added to your build path. You must have created a project and be in the package explorer view if you don't see it (Window->Show View->Package Explorer)
+
+Right-click on your project, select "Build Path-Add External Archive" and add jar file.
+
+It will appear in your project explorer under "referenced libraries", inside the jar will be OOPGraphics.class.
+
+Don't forget to look at the inherited methods from JPanel and above, which will also be if use.
+
+Updating the Jar File Eclipse
+If you need to update the jar file then remove the old one by expending Referenced Libraries in your project so that OOPGraphics.jar appears.
+
+Right click on OOPGraphics.jar and select Build path->Remove From Build Path.
+
+You will get syntax errors in your project where it references OOPGraphics, but you can now add the new version of OOPGraphics.jar using the steps above.
+
+Adding the Jar File IntelliJ
+...
+Open your installed IntelliJ IDEA Project and
+
+Go to the File > Project Structure
+
+Select Modules at the left panel and select the Dependencies tab.
+
+Select the + icon and select 1 JARs or Directories option.
+
+select OOPGraphics.jar.
+
+Click on the OK button
+
+Version History
+All software has bugs, if you find one please report to author. Ensure you have the latest version.
+
+V6.1 Added second constructor which accepts panel size.
+
+V6.0 renamed to LBUGraphics. This version is fine for 2025 assignment if you don't want to change panel size.
+
+V5.1 changed about() graphics, minor tidy up.
+
+V5.0 renamed to OOPGraphics
+
+V4.5 setPanelSize(int, int) now revalidates the display so its effect is immediately seen.
+
+V4.4 updated documentation, changed reset to point turtle down.
+
+V4.3 change back to bitmap from index color model.
+
+V4.2 fixed bugs -no animation with turn without integer and setPenColour not working fixed.
+
+V4.1 January 2023 exception added for fill operation.
+
+V4.0 rewritten to have pixel by pixel animated turtle.
+
+V3.1 threaded about() now holds execution until it has completed, added stroke and graphics2d.
+
+V2.0 adds simple GUI interface, now an abstract class with CommandLineInterface Interface.
+
+example code
+import java.awt.FlowLayout;
+import javax.swing.JFrame;
+import uk.ac.leedsbeckett.oop.LBUGraphics;
+
+public class Main extends LBUGraphics
+{
+        public static void main(String[] args)
+        {
+                new Main(); //create instance of class that extends LBUGraphics (could be separate class without main), gets out of static context
+        }
+
+        public Main()
+        {
+                JFrame MainFrame = new JFrame();                //create a frame to display the turtle panel on
+                MainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //Make sure the app exits when closed
+                MainFrame.setLayout(new FlowLayout());  //not strictly necessary
+                MainFrame.add(this);                                    //"this" is this object that extends turtle graphics so we are adding a turtle graphics panel to the frame
+                MainFrame.pack();                                               //set the frame to a size we can see
+                MainFrame.setVisible(true);                             //now display it
+                about();                                                                //call the LBUGraphics about method to display version information.
+        }
+
+
+        public void processCommand(String command)      //this method must be provided because LBUGraphics will call it when it's JTextField is used
+        {
+        //String parameter is the text typed into the LBUGraphics JTextfield
+        //lands here if return was pressed or "ok" JButton clicked
+        
+        //TO DO
+        }
+}
+
+See Also:
+Serialized Form
+Nested Class Summary
+Nested classes/interfaces inherited from class javax.swing.JPanel
+JPanel.AccessibleJPanel
+Nested classes/interfaces inherited from class javax.swing.JComponent
+JComponent.AccessibleJComponent
+Nested classes/interfaces inherited from class java.awt.Container
+Container.AccessibleAWTContainer
+Nested classes/interfaces inherited from class java.awt.Component
+Component.AccessibleAWTComponent, Component.BaselineResizeBehavior, Component.BltBufferStrategy, Component.FlipBufferStrategy
+Field Summary
+Fields
+Modifier and Type
+Field
+Description
+protected int
+Colour
+Colour of the pen the turtle draws with (A Java Color)
+protected int
+direction
+direction the turtle is pointing in, in degrees
+protected boolean
+drawOn
+a moving turtle will draw if this is true and not if it is false (set by drawOn and drawOff methods)
+protected Color
+PenColour
+Colour turtle is drawing in.
+protected int
+penSize
+Thickness of the line the turtle draws.
+protected int
+turtleSpeed
+The speed the turtle moves.
+final float
+VERSION
+public version number.
+protected int
+xPos
+x position of the turtle on the screen
+protected int
+yPos
+y position of the turtle on the screen
+Fields inherited from class javax.swing.JComponent
+listenerList, TOOL_TIP_TEXT_KEY, ui, UNDEFINED_CONDITION, WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, WHEN_FOCUSED, WHEN_IN_FOCUSED_WINDOW
+Fields inherited from class java.awt.Component
+accessibleContext, BOTTOM_ALIGNMENT, CENTER_ALIGNMENT, LEFT_ALIGNMENT, RIGHT_ALIGNMENT, TOP_ALIGNMENT
+Fields inherited from interface java.awt.image.ImageObserver
+ABORT, ALLBITS, ERROR, FRAMEBITS, HEIGHT, PROPERTIES, SOMEBITS, WIDTH
+Constructor Summary
+Constructors
+Constructor
+Description
+LBUGraphics()
+Constructor.
+LBUGraphics(int width, int height)
+Constructor.
+Method Summary
+All MethodsInstance MethodsAbstract MethodsConcrete Methods
+Modifier and Type
+Method
+Description
+void
+about()
+draws a simple graphic on the canvas and reports the version number of this class
+void
+actionPerformed(ActionEvent arg0)
+implemented abstract method from ActionListener interface.
+void
+circle(int radius)
+draws a circle of the provided radius at the turtle's current position.
+void
+clear()
+Clears the image contents with the current background colour.
+void
+clearInterface()
+clears JTextField and JLabel
+void
+cycleColours()
+Cycle the full colour palette Only works with palette images
+void
+dance(int moves)
+makes the turtle do a little dance
+void
+displayMessage(String message)
+display a message in the message JLabel
+void
+drawCircle(int radius, int x, int y)
+draw a circle using the polynomial method to give access to each pixel, turtle is updated in a thread so that it animates over the circle
+void
+drawLine(Color color, int x1, int y1, int x2, int y2)
+draws a line directly on the panel without affecting the turtle, it uses the stroke previously set by setStroke()
+void
+drawOff()
+puts pen up so a line will not be drawn when turtle is moved
+void
+drawOn()
+puts pen down so a line will be drawn when the turtle is moved
+void
+forward(int distance)
+move the turtle (in the direction it is pointing) by {distance} pixels.
+void
+forward(String amount)
+turtle is moved in the direction it is pointing by given number of pixels.
+Color
+getBackground_Col()
+gets the background colour used by clear() to fill the panel.
+BufferedImage
+getBufferedImage()
+return a BufferedImage of the display, so that it can be saved example BufferedImage bufImg = getBufferedImage(); Graphics g = bufImg.getGraphics(); g.drawLine(0,0,250,250);
+int
+getDirection()
+getDirection gets the direction the turtle is pointing in.
+Graphics2D
+getGraphics2DContext()
+returns the graphicsContext2D of the Turtle display, so you can draw on it using the extended Graphics2Dl Java drawing methods example Graphics g = getGraphics2DContext(); g.setColor(Color.red); g.drawLine(0, 0, 250, 500);
+Graphics
+getGraphicsContext()
+returns the graphicsContext of the Turtle display so you can draw on it using the normal Java drawing methods example Graphics g = getGraphicsContext(); g.setColor(Color.red); g.drawLine(0, 0, 250, 500);
+Color
+getPenColour()
+getPenColour returns the colour that the turtle draws in
+boolean
+getPenState()
+returns the current state of the pen
+float
+getStroke()
+Get the width in pixels of the pen.
+int
+getxPos()
+get the x position of the turtle
+int
+getyPos()
+get the y position of the turtle
+void
+left()
+turtle is rotated 90 degrees to the left.
+void
+left(int amount)
+turtle is rotated 90 degrees to the right by amount degrees.
+void
+left(String amount)
+turtle is rotated to the left in degrees.
+void
+paintComponent(Graphics g)
+ 
+void
+pointTurtle(int degrees)
+rotate the turtle from its current rotation to the desired, absolute angle in the shortest direction, showing the animation
+abstract void
+processCommand(String command)
+must be implemented in your class so that TurtleGraphics can call your code when something happens at the LBUGraphics GUI (i.e.
+void
+reset()
+reset() moves turtle to initial position
+void
+right()
+turtle is rotated 90 degrees to the right.
+void
+right(int amount)
+turtle is rotated to the right by amount degrees.
+void
+right(String amount)
+turtle is rotated to the right in degrees.
+void
+setBackground_Col(Color background_Col)
+sets the background colour used by clear() to fill the panel.
+void
+setBufferedImage(BufferedImage newImage)
+sets the background image to be the passed in BufferedImage, so for example, a previously saved image can be restored
+void
+setGUIVisible(boolean visible)
+hide or show the textfield, ok button and label
+void
+setInternalTurtle(int turtle)
+Set the turtle graphic to 0 a turtle, 1 and orc, 2 an ellipse, 3 a dot, 4 nothing You can use setTurtleGraphic() to provide your own image file (fill the background in transparent).
+void
+setLBUGraphics(int width, int height)
+Setter for LBUGraphics, called by consturutors
+void
+setPanelSize(int xSize, int ySize)
+Resize the turtle area, current display will be lost.
+void
+setPenColour(Color col)
+setPenColour sets the colour that the turtle will draw in
+void
+setPenState(boolean state)
+Change the pen state (true is down, false is up)
+void
+setPixel(int x, int y, int colour, WritableRaster raster)
+sets a pixel and adjacent pixels, according to the global penSize in the passed raster of the passed colour
+void
+setPreferredSize(int width, int height)
+set the preferred size of the LBUGraphics panel
+void
+setStroke(int strokeWidth)
+sets the width of the line drawn
+void
+setTurtleImage(String filename)
+Replace the standard turtle image with given image give full path or store in application directory don't make the image too big, have background of the image transparent and it should be pointing right (90 degrees) best to make the image have a transparent background(Google it).
+void
+setTurtleSpeed(int speed)
+sets the speed of the turtle's movement.
+void
+setxPos(int xPos)
+manually set the x position of the turtle (i.e.
+void
+setyPos(int yPos)
+manually set the y position of the turtle (i.e.
+Methods inherited from class javax.swing.JPanel
+getAccessibleContext, getUI, getUIClassID, paramString, setUI, updateUI
+Methods inherited from class javax.swing.JComponent
+addAncestorListener, addNotify, addVetoableChangeListener, computeVisibleRect, contains, createToolTip, disable, enable, firePropertyChange, firePropertyChange, firePropertyChange, fireVetoableChange, getActionForKeyStroke, getActionMap, getAlignmentX, getAlignmentY, getAncestorListeners, getAutoscrolls, getBaseline, getBaselineResizeBehavior, getBorder, getBounds, getClientProperty, getComponentGraphics, getComponentPopupMenu, getConditionForKeyStroke, getDebugGraphicsOptions, getDefaultLocale, getFontMetrics, getGraphics, getHeight, getInheritsPopupMenu, getInputMap, getInputMap, getInputVerifier, getInsets, getInsets, getListeners, getLocation, getMaximumSize, getMinimumSize, getNextFocusableComponent, getPopupLocation, getPreferredSize, getRegisteredKeyStrokes, getRootPane, getSize, getToolTipLocation, getToolTipText, getToolTipText, getTopLevelAncestor, getTransferHandler, getVerifyInputWhenFocusTarget, getVetoableChangeListeners, getVisibleRect, getWidth, getX, getY, grabFocus, hide, isDoubleBuffered, isLightweightComponent, isManagingFocus, isOpaque, isOptimizedDrawingEnabled, isPaintingForPrint, isPaintingOrigin, isPaintingTile, isRequestFocusEnabled, isValidateRoot, paint, paintBorder, paintChildren, paintImmediately, paintImmediately, print, printAll, printBorder, printChildren, printComponent, processComponentKeyEvent, processKeyBinding, processKeyEvent, processMouseEvent, processMouseMotionEvent, putClientProperty, registerKeyboardAction, registerKeyboardAction, removeAncestorListener, removeNotify, removeVetoableChangeListener, repaint, repaint, requestDefaultFocus, requestFocus, requestFocus, requestFocusInWindow, requestFocusInWindow, resetKeyboardActions, reshape, revalidate, scrollRectToVisible, setActionMap, setAlignmentX, setAlignmentY, setAutoscrolls, setBackground, setBorder, setComponentPopupMenu, setDebugGraphicsOptions, setDefaultLocale, setDoubleBuffered, setEnabled, setFocusTraversalKeys, setFont, setForeground, setInheritsPopupMenu, setInputMap, setInputVerifier, setMaximumSize, setMinimumSize, setNextFocusableComponent, setOpaque, setPreferredSize, setRequestFocusEnabled, setToolTipText, setTransferHandler, setUI, setVerifyInputWhenFocusTarget, setVisible, unregisterKeyboardAction, update
+Methods inherited from class java.awt.Container
+add, add, add, add, add, addContainerListener, addImpl, addPropertyChangeListener, addPropertyChangeListener, applyComponentOrientation, areFocusTraversalKeysSet, countComponents, deliverEvent, doLayout, findComponentAt, findComponentAt, getComponent, getComponentAt, getComponentAt, getComponentCount, getComponents, getComponentZOrder, getContainerListeners, getFocusTraversalKeys, getFocusTraversalPolicy, getLayout, getMousePosition, insets, invalidate, isAncestorOf, isFocusCycleRoot, isFocusCycleRoot, isFocusTraversalPolicyProvider, isFocusTraversalPolicySet, layout, list, list, locate, minimumSize, paintComponents, preferredSize, printComponents, processContainerEvent, processEvent, remove, remove, removeAll, removeContainerListener, setComponentZOrder, setFocusCycleRoot, setFocusTraversalPolicy, setFocusTraversalPolicyProvider, setLayout, transferFocusDownCycle, validate, validateTree
+Methods inherited from class java.awt.Component
+action, add, addComponentListener, addFocusListener, addHierarchyBoundsListener, addHierarchyListener, addInputMethodListener, addKeyListener, addMouseListener, addMouseMotionListener, addMouseWheelListener, bounds, checkImage, checkImage, coalesceEvents, contains, createImage, createImage, createVolatileImage, createVolatileImage, disableEvents, dispatchEvent, enable, enableEvents, enableInputMethods, firePropertyChange, firePropertyChange, firePropertyChange, firePropertyChange, firePropertyChange, firePropertyChange, getBackground, getBounds, getColorModel, getComponentListeners, getComponentOrientation, getCursor, getDropTarget, getFocusCycleRootAncestor, getFocusListeners, getFocusTraversalKeysEnabled, getFont, getForeground, getGraphicsConfiguration, getHierarchyBoundsListeners, getHierarchyListeners, getIgnoreRepaint, getInputContext, getInputMethodListeners, getInputMethodRequests, getKeyListeners, getLocale, getLocation, getLocationOnScreen, getMouseListeners, getMouseMotionListeners, getMousePosition, getMouseWheelListeners, getName, getParent, getPropertyChangeListeners, getPropertyChangeListeners, getSize, getToolkit, getTreeLock, gotFocus, handleEvent, hasFocus, imageUpdate, inside, isBackgroundSet, isCursorSet, isDisplayable, isEnabled, isFocusable, isFocusOwner, isFocusTraversable, isFontSet, isForegroundSet, isLightweight, isMaximumSizeSet, isMinimumSizeSet, isPreferredSizeSet, isShowing, isValid, isVisible, keyDown, keyUp, list, list, list, location, lostFocus, mouseDown, mouseDrag, mouseEnter, mouseExit, mouseMove, mouseUp, move, nextFocus, paintAll, postEvent, prepareImage, prepareImage, processComponentEvent, processFocusEvent, processHierarchyBoundsEvent, processHierarchyEvent, processInputMethodEvent, processMouseWheelEvent, remove, removeComponentListener, removeFocusListener, removeHierarchyBoundsListener, removeHierarchyListener, removeInputMethodListener, removeKeyListener, removeMouseListener, removeMouseMotionListener, removeMouseWheelListener, removePropertyChangeListener, removePropertyChangeListener, repaint, repaint, repaint, requestFocus, requestFocus, requestFocusInWindow, resize, resize, setBounds, setBounds, setComponentOrientation, setCursor, setDropTarget, setFocusable, setFocusTraversalKeysEnabled, setIgnoreRepaint, setLocale, setLocation, setLocation, setMixingCutoutShape, setName, setSize, setSize, show, show, size, toString, transferFocus, transferFocusBackward, transferFocusUpCycle
+Methods inherited from class java.lang.Object
+clone, equals, finalize, getClass, hashCode, notify, notifyAll, wait, wait, wait
+Field Details
+VERSION
+public final float VERSION
+public version number.
+See Also:
+Constant Field Values
+Colour
+protected int Colour
+Colour of the pen the turtle draws with (A Java Color)
+PenColour
+protected Color PenColour
+Colour turtle is drawing in.
+penSize
+protected int penSize
+Thickness of the line the turtle draws.
+drawOn
+protected boolean drawOn
+a moving turtle will draw if this is true and not if it is false (set by drawOn and drawOff methods)
+xPos
+protected int xPos
+x position of the turtle on the screen
+yPos
+protected int yPos
+y position of the turtle on the screen
+direction
+protected int direction
+direction the turtle is pointing in, in degrees
+turtleSpeed
+protected int turtleSpeed
+The speed the turtle moves.
+Constructor Details
+LBUGraphics
+public LBUGraphics()
+Constructor. Create a panel of a standard size with pen set to the middle and turtle pointing down the screen The pen is up.
+LBUGraphics
+public LBUGraphics(int width,
+ int height)
+Constructor. Create a panel of a standard size with pen set to the middle and turtle pointing down the screen The pen is up.
+Parameters:
+width - of JPanel
+height - of JPanel
+Method Details
+processCommand
+public abstract void processCommand(String command)
+must be implemented in your class so that TurtleGraphics can call your code when something happens at the LBUGraphics GUI (i.e. user presses return in text field or clicks ok button). If you do not implement this method you will get a syntax error.
+Specified by:
+processCommand in interface uk.ac.leedsbeckett.oop.CommandLineInterface
+Parameters:
+command - is the String typed into the text field before return was pressed or ok was clicked.
+getGraphicsContext
+public Graphics getGraphicsContext()
+returns the graphicsContext of the Turtle display so you can draw on it using the normal Java drawing methods example Graphics g = getGraphicsContext(); g.setColor(Color.red); g.drawLine(0, 0, 250, 500);
+Returns:
+graphics context
+getGraphics2DContext
+public Graphics2D getGraphics2DContext()
+returns the graphicsContext2D of the Turtle display, so you can draw on it using the extended Graphics2Dl Java drawing methods example Graphics g = getGraphics2DContext(); g.setColor(Color.red); g.drawLine(0, 0, 250, 500);
+Returns:
+graphics context
+getBufferedImage
+public BufferedImage getBufferedImage()
+return a BufferedImage of the display, so that it can be saved example BufferedImage bufImg = getBufferedImage(); Graphics g = bufImg.getGraphics(); g.drawLine(0,0,250,250);
+Returns:
+BufferedImage of display
+setBufferedImage
+public void setBufferedImage(BufferedImage newImage)
+sets the background image to be the passed in BufferedImage, so for example, a previously saved image can be restored
+Parameters:
+newImage - saved BufferedImage
+getPenColour
+public Color getPenColour()
+getPenColour returns the colour that the turtle draws in
+Returns:
+java Color
+getStroke
+public float getStroke()
+Get the width in pixels of the pen.
+Returns:
+stroke width
+setStroke
+public void setStroke(int strokeWidth)
+sets the width of the line drawn
+Parameters:
+strokeWidth - integer representing the thickness of the line
+setPenColour
+public void setPenColour(Color col)
+setPenColour sets the colour that the turtle will draw in
+Parameters:
+col - Java Color to set the pen to
+getDirection
+public int getDirection()
+getDirection gets the direction the turtle is pointing in.
+Returns:
+direction in degrees
+drawLine
+public void drawLine(Color color,
+ int x1,
+ int y1,
+ int x2,
+ int y2)
+draws a line directly on the panel without affecting the turtle, it uses the stroke previously set by setStroke()
+Parameters:
+color - colour to draw in
+x1 - xpos of start of line
+y1 - ypos of start of line
+x2 - xpos of end of line
+y2 - ypos of end of line
+getBackground_Col
+public Color getBackground_Col()
+gets the background colour used by clear() to fill the panel.
+Returns:
+the background_Col used when clear() is called.
+setBackground_Col
+public void setBackground_Col(Color background_Col)
+sets the background colour used by clear() to fill the panel.
+Parameters:
+background_Col - the background_Col to set (used when clear() is called.).
+getxPos
+public int getxPos()
+get the x position of the turtle
+Returns:
+the xPos
+setxPos
+public void setxPos(int xPos)
+manually set the x position of the turtle (i.e. lift the turtle up and drop it).
+Parameters:
+xPos - the xPos to set
+getyPos
+public int getyPos()
+get the y position of the turtle
+Returns:
+the yPos
+setyPos
+public void setyPos(int yPos)
+manually set the y position of the turtle (i.e. lift the turtle up and drop it).
+Parameters:
+yPos - the yPos to set
+about
+public void about()
+draws a simple graphic on the canvas and reports the version number of this class
+setTurtleSpeed
+public void setTurtleSpeed(int speed)
+sets the speed of the turtle's movement.
+Parameters:
+speed - 0 is fastest 1 for each microsecond of delay
+getPenState
+public boolean getPenState()
+returns the current state of the pen
+Returns:
+true if pen up, false if pen down
+setPenState
+public void setPenState(boolean state)
+Change the pen state (true is down, false is up)
+Parameters:
+state - of pen
+drawOn
+public void drawOn()
+puts pen down so a line will be drawn when the turtle is moved
+drawOff
+public void drawOff()
+puts pen up so a line will not be drawn when turtle is moved
+right
+public void right(String amount)
+turtle is rotated to the right in degrees.
+Parameters:
+amount - is a String representation of the degrees to rotate if param cannot be converted to an integer a NumberFormatException is thrown.
+right
+public void right()
+turtle is rotated 90 degrees to the right. i.e. if it is facing upwards (north) before it will facing right (east) after
+right
+public void right(int amount)
+turtle is rotated to the right by amount degrees. i.e. it will rotate right by amount degrees The turtle will wrap around if it goes beyond 360
+Parameters:
+amount - is an integer
+left
+public void left(String amount)
+turtle is rotated to the left in degrees.
+Parameters:
+amount - is a String representation of the degrees to rotate if param cannot be converted to an integer a NumberFormatException is thrown.
+left
+public void left()
+turtle is rotated 90 degrees to the left. i.e. if it is facing upwards (north) before it will facing left (west) after
+left
+public void left(int amount)
+turtle is rotated 90 degrees to the right by amount degrees. i.e. it will rotate right by amount degrees The turtle will wrap around if it goes beyond 360
+Parameters:
+amount - is an integer
+pointTurtle
+public void pointTurtle(int degrees)
+rotate the turtle from its current rotation to the desired, absolute angle in the shortest direction, showing the animation
+Parameters:
+degrees - rotation amount
+forward
+public void forward(String amount)
+turtle is moved in the direction it is pointing by given number of pixels.
+Parameters:
+amount - is a String if param cannot be converted to an integer a NumberFormatException is thrown.
+dance
+public void dance(int moves)
+makes the turtle do a little dance
+Parameters:
+moves - number of moves
+forward
+public void forward(int distance)
+move the turtle (in the direction it is pointing) by {distance} pixels. A line will be drawn if the pen is down, not if it is up
+Parameters:
+distance - in an integer
+clear
+public void clear()
+Clears the image contents with the current background colour.
+circle
+public void circle(int radius)
+draws a circle of the provided radius at the turtle's current position. Turtle is animated.
+Parameters:
+radius - radius of the circle to draw
+paintComponent
+public void paintComponent(Graphics g)
+Overrides:
+paintComponent in class JComponent
+setPreferredSize
+public void setPreferredSize(int width,
+ int height)
+set the preferred size of the LBUGraphics panel
+Parameters:
+width - in pixels
+height - in pixels
+setTurtleImage
+public void setTurtleImage(String filename)
+Replace the standard turtle image with given image give full path or store in application directory don't make the image too big, have background of the image transparent and it should be pointing right (90 degrees) best to make the image have a transparent background(Google it).
+Parameters:
+filename - file or path and filename of the image to load
+setPanelSize
+public void setPanelSize(int xSize,
+ int ySize)
+Resize the turtle area, current display will be lost.
+Parameters:
+xSize - width of panel
+ySize - height of panel
+setGUIVisible
+public void setGUIVisible(boolean visible)
+hide or show the textfield, ok button and label
+Parameters:
+visible - true to show, false to hide
+reset
+public void reset()
+reset() moves turtle to initial position
+displayMessage
+public void displayMessage(String message)
+display a message in the message JLabel
+Parameters:
+message - string to display in the panel's textfield
+clearInterface
+public void clearInterface()
+clears JTextField and JLabel
+drawCircle
+public void drawCircle(int radius,
+ int x,
+ int y)
+draw a circle using the polynomial method to give access to each pixel, turtle is updated in a thread so that it animates over the circle
+Parameters:
+radius - circlue radius
+x - circle x position
+y - circle y position
+setPixel
+public void setPixel(int x,
+ int y,
+ int colour,
+ WritableRaster raster)
+sets a pixel and adjacent pixels, according to the global penSize in the passed raster of the passed colour
+Parameters:
+x - position of pixel
+y - position of pixel
+colour - palate number
+raster - raster of pixels to set
+cycleColours
+public void cycleColours()
+Cycle the full colour palette Only works with palette images
+setInternalTurtle
+public void setInternalTurtle(int turtle)
+Set the turtle graphic to 0 a turtle, 1 and orc, 2 an ellipse, 3 a dot, 4 nothing You can use setTurtleGraphic() to provide your own image file (fill the background in transparent).
+Parameters:
+turtle - number for turtle
+setLBUGraphics
+public void setLBUGraphics(int width,
+ int height)
+Setter for LBUGraphics, called by consturutors
+Parameters:
+width - of JPanel
+height - of JPanel
+actionPerformed
+public void actionPerformed(ActionEvent arg0)
+implemented abstract method from ActionListener interface. Reads text from commandLine JTextField and calls abstract method processCommand() passing the text in the jTextField to it. The jTextField is then cleared. Derived classes must provide a definition of void processCommand(String command) runs in a thread so animations are visible
+Specified by:
+actionPerformed in interface ActionListener
